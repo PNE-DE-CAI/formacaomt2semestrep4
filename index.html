@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etapa 3 — Prioridades de Retomada | Formação Matemática</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:linear-gradient(145deg,#0a2f6c 0%,#041a3a 100%);min-height:100vh;padding:20px;color:#1e293b}
+.main-container{max-width:1440px;margin:0 auto;background:#0f1a24;border-radius:48px;padding:20px;box-shadow:0 30px 35px rgba(0,0,0,.5),inset 0 1px 4px rgba(255,255,200,.1);border:1px solid #d32f2f}
+.header{display:flex;justify-content:space-between;align-items:center;background:rgba(10,47,108,.85);backdrop-filter:blur(4px);padding:12px 24px;border-radius:60px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
+.logo-area{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo-area img{height:55px;width:auto;border-radius:12px;background:#fff;padding:4px;object-fit:contain}
+.logo-text{font-size:1rem;font-weight:600;color:#ffec9e;line-height:1.3}
+.logo-text small{display:block;font-weight:400;font-size:.75rem;color:rgba(255,236,158,.6)}
+.title-badge{background:#d32f2f;color:#fff;padding:6px 18px;border-radius:3rem;font-weight:700;letter-spacing:1px;font-size:.85rem}
+.timer-bar{display:flex;align-items:center;justify-content:space-between;background:rgba(10,47,108,.6);padding:10px 24px;border-radius:60px;margin-bottom:20px;flex-wrap:wrap;gap:10px;position:relative;overflow:hidden}
+.timer-bar .brand{font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#ffec9e}
+.timer-display{font-size:22px;font-weight:700;color:#fff;letter-spacing:.05em;min-width:80px;text-align:center;font-variant-numeric:tabular-nums}
+.timer-display.warning{color:#f87171}
+.timer-controls{display:flex;gap:8px}
+.timer-controls button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-family:'Inter',sans-serif;font-size:11px;padding:4px 12px;border-radius:6px;cursor:pointer;transition:.2s}
+.timer-controls button:hover{background:#d32f2f;color:#fff;border-color:#d32f2f}
+.progress-track{position:absolute;bottom:0;left:0;height:3px;background:#d32f2f;transition:width 1s linear;box-shadow:0 0 12px rgba(211,47,47,.4)}
+.section{display:none;animation:fadeUp .5s ease forwards}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#fff;border-radius:32px;padding:1.8rem 2rem;margin-bottom:24px;box-shadow:0 8px 20px rgba(0,0,0,.2);border:1px solid #e0e4e9;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.25)}
+.card h2{font-size:1.6rem;font-weight:800;color:#0a2f6c;margin-bottom:.75rem;display:flex;align-items:center;gap:10px}
+.card h3{font-size:1.2rem;font-weight:700;color:#0a2f6c;margin:1.2rem 0 .6rem}
+.card p{color:#1e293b;line-height:1.6}
+.card-accent{border-left:4px solid #d32f2f}
+.card-warning{border-left:4px solid #ffc107;background:#fffdf0}
+.card-success{border-left:4px solid #1a7a4a}
+.card-info{border-left:4px solid #0a2f6c}
+.card-hero{background:linear-gradient(135deg,#0a2f6c 0%,#1a4a8c 50%,#d32f2f 100%);color:#fff;text-align:center;padding:3rem 2rem;border:none}
+.card-hero h1{font-size:clamp(28px,5vw,48px);font-weight:800;color:#ffec9e;margin-bottom:.5rem;line-height:1.1}
+.card-hero p{color:rgba(255,255,255,.85);font-size:1.1rem;max-width:600px;margin:0 auto}
+.badge{display:inline-block;background:#d32f2f;color:#fff;padding:4px 16px;border-radius:60px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.badge.azul{background:#0a2f6c}
+.badge.verde{background:#1a7a4a}
+.badge.dourado{background:#b8860b}
+.badge.roxo{background:#6b21a8}
+.section-label{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#d32f2f;margin-bottom:8px}
+.section-title{font-size:clamp(28px,5vw,42px);line-height:1.15;color:#0a2f6c;margin-bottom:16px;font-weight:800}
+.section-subtitle{font-size:14px;color:#64748b;max-width:600px;margin-bottom:32px;line-height:1.7}
+.section-progress{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.progress-bar-track{flex:1;height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden}
+.progress-bar-fill{height:100%;background:#d32f2f;border-radius:2px;transition:width .5s ease}
+.progress-text{font-size:11px;color:#64748b;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.04em;padding:12px 28px;border-radius:60px;border:none;cursor:pointer;transition:.25s;text-transform:uppercase;font-family:'Inter',sans-serif}
+.btn-primary{background:#d32f2f;color:#fff}
+.btn-primary:hover{background:#b71c1c;transform:translateY(-1px);box-shadow:0 6px 16px rgba(211,47,47,.35)}
+.btn-secondary{background:#0a2f6c;color:#fff}
+.btn-secondary:hover{background:#041a3a}
+.btn-group{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;justify-content:center}
+.quiz-option{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;margin-bottom:10px;cursor:pointer;transition:.25s;position:relative;overflow:hidden}
+.quiz-option::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:.3s}
+.quiz-option:hover{border-color:#0a2f6c;background:#f1f5f9}
+.quiz-option.selected{border-color:#d32f2f;background:rgba(211,47,47,.05)}
+.quiz-option.selected::before{background:#d32f2f}
+.quiz-option.correct{border-color:#1a7a4a;background:rgba(26,122,74,.05)}
+.quiz-option.correct::before{background:#1a7a4a}
+.quiz-option.wrong{border-color:#d32f2f;background:rgba(211,47,47,.05)}
+.quiz-option.wrong::before{background:#d32f2f}
+.quiz-letter{font-weight:700;font-size:13px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#e2e8f0;color:#64748b;flex-shrink:0;transition:.3s}
+.quiz-option.selected .quiz-letter{background:#d32f2f;color:#fff}
+.quiz-option.correct .quiz-letter{background:#1a7a4a;color:#fff}
+.quiz-option.wrong .quiz-letter{background:#d32f2f;color:#fff}
+.quiz-text{font-size:13px;line-height:1.6;padding-top:4px}
+.drag-zone{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;min-height:50px;padding:16px;background:#f1f5f9;border:2px dashed #cbd5e1;border-radius:20px;transition:.3s}
+.drag-item{font-size:12px;padding:10px 16px;background:#0a2f6c;color:#fff;border-radius:60px;font-weight:600;cursor:grab;user-select:none;transition:.2s;border:2px solid transparent}
+.drag-item:active{cursor:grabbing}
+.drag-item.dragging{opacity:.4;transform:scale(.95)}
+.drag-item.placed{opacity:.4;pointer-events:none}
+.drop-target{min-height:80px;padding:16px;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:20px;margin-bottom:12px;transition:.3s}
+.drop-target.drag-over{border-color:#d32f2f;background:rgba(211,47,47,.03)}
+.target-label{font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em}
+.target-desc{font-size:11px;color:#64748b;margin-bottom:10px;font-style:italic}
+.dropped-items{display:flex;flex-wrap:wrap;gap:8px;min-height:36px}
+.dropped-item{font-size:11px;padding:6px 12px;background:#d32f2f;color:#fff;border-radius:6px;font-weight:500;cursor:pointer;transition:.2s}
+.dropped-item:hover{background:#b71c1c}
+select{width:100%;padding:.7rem 1rem;border:2px solid #cbd5e1;border-radius:14px;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:500;background:#fff;color:#1e293b;cursor:pointer;transition:.2s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230a2f6c' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:2.5rem}
+select:focus{outline:none;border-color:#0a2f6c;box-shadow:0 0 0 3px rgba(10,47,108,.15)}
+select.correct-select{border-color:#1a7a4a;background-color:#d4edda;color:#155724}
+select.incorrect-select{border-color:#d32f2f;background-color:#f8d7da;color:#721c24}
+.dropdown-row{display:flex;align-items:center;gap:12px;margin-bottom:1rem;flex-wrap:wrap}
+.dropdown-row .q-label{flex:1;min-width:200px;font-weight:600;color:#0a2f6c;font-size:.95rem;line-height:1.5}
+.dropdown-row .q-num{background:#0a2f6c;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+.dropdown-row select{flex:1;min-width:220px}
+.tf-option{display:flex;align-items:center;gap:14px;padding:14px 20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;margin-bottom:10px;cursor:pointer;transition:.25s}
+.tf-option:hover{border-color:#0a2f6c;background:#f1f5f9}
+.tf-option.selected{border-color:#d32f2f;background:rgba(211,47,47,.05)}
+.tf-option.correct{border-color:#1a7a4a;background:rgba(26,122,74,.05)}
+.tf-option.wrong{border-color:#d32f2f;background:rgba(211,47,47,.05)}
+.tf-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;background:#e2e8f0;color:#64748b;transition:.3s}
+.tf-option.selected .tf-icon{background:#d32f2f;color:#fff}
+.tf-option.correct .tf-icon{background:#1a7a4a;color:#fff}
+.tf-option.wrong .tf-icon{background:#d32f2f;color:#fff}
+.tf-text{font-size:13px;line-height:1.6;font-weight:600;color:#0a2f6c}
+.tf-statement{font-size:13px;line-height:1.7;color:#1e293b;padding:14px 18px;background:#f8fafc;border-radius:14px;margin-bottom:12px;border-left:3px solid #0a2f6c}
+.tf-row{display:flex;gap:10px;margin-bottom:6px}
+.tf-row .tf-option{flex:1;margin-bottom:0}
+.bingo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:1.5rem 0}
+.bingo-cell{padding:16px 12px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;transition:.25s;line-height:1.4;min-height:80px;display:flex;align-items:center;justify-content:center}
+.bingo-cell:hover{border-color:#0a2f6c;background:#f1f5f9}
+.bingo-cell.marked{border-color:#d32f2f;background:rgba(211,47,47,.08);color:#d32f2f}
+.bingo-cell.marked::after{content:'✓';display:block;font-size:20px;margin-top:4px}
+.feedback{padding:14px 18px;border-radius:16px;font-size:13px;margin-top:16px;display:none;animation:fadeUp .3s ease;font-weight:500}
+.feedback.show{display:block}
+.feedback.success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+.feedback.error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+.feedback.info{background:#e0f2fe;color:#0a2f6c;border:1px solid #b3e5fc}
+.score-display{text-align:center;padding:40px}
+.score-number{font-size:72px;color:#d32f2f;line-height:1;font-weight:800}
+.score-label{font-size:14px;color:#64748b;margin-top:8px;text-transform:uppercase;letter-spacing:.1em}
+.gabarito-section{background:#fff;border-radius:32px;padding:1.8rem 2rem;margin-bottom:24px;box-shadow:0 8px 20px rgba(0,0,0,.2);border:2px solid #1a7a4a}
+.gabarito-item{display:flex;align-items:flex-start;gap:10px;padding:.6rem 0;border-bottom:1px solid #e2e8f0;font-size:.92rem;line-height:1.5}
+.gabarito-item:last-child{border-bottom:none}
+.gabarito-num{background:#1a7a4a;color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;margin-top:2px}
+.gabarito-resp{font-weight:700;color:#1a7a4a}
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti-piece{position:absolute;width:8px;height:8px;top:-10px;animation:confettiFall 3s ease-in forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.stagger>*{opacity:0;animation:fadeUp .5s ease forwards}
+.stagger>*:nth-child(1){animation-delay:.05s}
+.stagger>*:nth-child(2){animation-delay:.1s}
+.stagger>*:nth-child(3){animation-delay:.15s}
+.stagger>*:nth-child(4){animation-delay:.2s}
+.stagger>*:nth-child(5){animation-delay:.25s}
+.stagger>*:nth-child(6){animation-delay:.3s}
+.stagger>*:nth-child(7){animation-delay:.35s}
+.stagger>*:nth-child(8){animation-delay:.4s}
+.page-footer{text-align:center;font-size:.75rem;color:rgba(255,236,158,.35);margin-top:30px;padding:10px 0 6px;font-weight:400;border-top:1px solid rgba(255,255,255,.05)}
+.match-wrapper{display:grid;grid-template-columns:1fr 48px 1fr;gap:0;margin-bottom:24px}
+.match-col{display:flex;flex-direction:column;gap:10px}
+.match-col-header{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#fff;background:#0a2f6c;padding:10px 14px;border-radius:14px;text-align:center;margin-bottom:6px}
+.match-item{padding:14px 16px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:14px;cursor:pointer;transition:.25s;font-size:12px;line-height:1.55;font-weight:500;color:#1e293b;user-select:none}
+.match-item:hover{border-color:#0a2f6c;background:#f1f5f9}
+.match-item.sel{border-color:#d32f2f;background:rgba(211,47,47,.06);box-shadow:0 0 0 3px rgba(211,47,47,.1)}
+.match-item.matched{border-color:#1a7a4a;background:rgba(26,122,74,.06);pointer-events:none;opacity:.85}
+.match-item.matched::after{content:'  ✓';color:#1a7a4a;font-weight:800}
+.match-item.wrong-flash{animation:wf .45s ease}
+@keyframes wf{0%,100%{border-color:#e2e8f0;background:#f8fafc}50%{border-color:#d32f2f;background:rgba(211,47,47,.12)}}
+.match-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding-top:38px}
+.match-divider span{font-size:20px;color:#cbd5e1}
+@media(max-width:960px){.main-container{border-radius:28px;padding:14px}.header{border-radius:32px}.card{padding:1.5rem}}
+@media(max-width:600px){body{padding:10px}.main-container{border-radius:20px;padding:10px}.header{border-radius:24px;padding:10px 16px;flex-direction:column;align-items:flex-start}.logo-area img{height:40px}.card{padding:1.2rem;border-radius:20px}.bingo-grid{grid-template-columns:repeat(2,1fr)}.dropdown-row{flex-direction:column;align-items:stretch}.dropdown-row select{min-width:100%}.tf-row{flex-direction:column}.match-wrapper{grid-template-columns:1fr;gap:16px}.match-divider{flex-direction:row;padding-top:0}.match-divider span{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<div class="main-container">
+
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <div class="logo-area">
+      <img src="https://i.ibb.co/0p01LzxB/logo3de.jpg" alt="Logo Seduc SP" />
+      <div class="logo-text">
+        Etapa 3 — Prioridades de Retomada
+        <small>Formação de Matemática — CAIEIRAS/2026</small>
+      </div>
+    </div>
+    <span class="title-badge">SEDUC SP</span>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-bar">
+    <span class="brand">Cronômetro — 20 min</span>
+    <div class="timer-controls">
+      <button onclick="toggleTimer()" id="timerBtn">Pausar</button>
+      <button onclick="resetTimer()">Reiniciar</button>
+    </div>
+    <span class="timer-display" id="timerDisplay">20:00</span>
+    <div class="progress-track" id="timerProgress" style="width:100%"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 0: ABERTURA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section active" data-title="Boas-vindas">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:0%"></div></div>
+      <span class="progress-text">0 / 7</span>
+    </div>
+    <div class="stagger">
+
+      <div class="card card-hero">
+        <p style="font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px">Etapa 3 — 20 minutos</p>
+        <h1>Prioridades de Retomada</h1>
+        <p>Analisar quais Aprendizagens Essenciais anteriores representam pré-requisitos indispensáveis para o 2º semestre.</p>
+      </div>
+
+      <div class="card card-accent">
+        <h2>Objetivo desta etapa</h2>
+        <p style="font-size:13px;line-height:1.8">
+          Analisar quais <strong>Aprendizagens Essenciais anteriores</strong> representam <strong>pré-requisitos indispensáveis</strong> para o 2º semestre, e cruzá-las com <strong>descritores do Mapa SARESP</strong> para estabelecer prioridades de retomada. Para o Ensino Médio, será utilizada como referência a <strong>Matriz da Prova Paulista</strong>.
+        </p>
+      </div>
+
+      <div class="card card-warning">
+        <h3>O que vamos fazer</h3>
+        <p style="font-size:12px;line-height:1.9;color:#64748b">
+          1. Na tela <strong>"Aprendizagens Essenciais do Ano"</strong> do Guia do Currículo Priorizado, localizar as Aprendizagens Essenciais do 1º semestre e fazer uma <strong>análise conceitual</strong> para identificar quais travam as aprendizagens do 2º semestre.<br>
+          2. Verificar no <strong>"Mapa SARESP"</strong> se essas aprendizagens possuem descritores SARESP.<br>
+          3. Eleger, no máximo, <strong>duas</strong> Aprendizagens Essenciais como prioridades de retomada, preenchendo-as com seus respectivos descritores SARESP.
+        </p>
+      </div>
+
+      <div class="card card-info">
+        <h3>Referências — 6º ano (Anos Finais)</h3>
+        <p style="font-size:12px;line-height:1.8;color:#64748b">
+          <strong>Aprendizagens Fundamentais do 2º semestre:</strong><br>
+          · AE11 — Resolver problemas com as quatro operações fundamentais com números racionais positivos na representação decimal (3º bim).<br>
+          · AE12 — Resolver problemas de porcentagem com base na proporcionalidade, sem uso da regra de três (3º bim).<br><br>
+          <strong>Prioridades de Retomada identificadas:</strong><br>
+          · <strong>AE7</strong> (pré-requisito para AE11) — Resolver problemas que envolvam adição ou subtração de números racionais positivos na representação fracionária.<br>
+          · <strong>AE5</strong> (pré-requisito para AE12) — Resolver problemas envolvendo cálculo da fração de uma quantidade, cujo resultado é um número natural.
+        </p>
+      </div>
+
+      <div class="card card-success">
+        <h3>Referências — 1ª série EM (Prova Paulista)</h3>
+        <p style="font-size:12px;line-height:1.8;color:#64748b">
+          <strong>Aprendizagens Fundamentais do 2º semestre:</strong><br>
+          · AE4 — Funções polinomiais de 1º grau (Unidade Técnica EM13MAT401).<br>
+          · AE5 — Funções polinomiais de 2º grau (Unidade Técnica EM13MAT402).<br><br>
+          <strong>Prioridades de Retomada identificadas:</strong><br>
+          · <strong>AE1</strong> (pré-requisito para AE4) — Utilizar operações com números reais, incluindo potenciação e radicação.<br>
+          · <strong>AE4</strong> (pré-requisito para AE5) — Resolver situações-problema modeladas por funções polinomiais de 1º grau.
+        </p>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="goTo(1)">Começar atividade →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 1: QUIZ -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" data-title="Quiz">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:14%"></div></div>
+      <span class="progress-text">1 / 7</span>
+    </div>
+    <div class="stagger">
+      <p class="section-label">Atividade 1 — Quiz</p>
+      <h1 class="section-title">Entendendo a Etapa 3</h1>
+      <p class="section-subtitle">Verifique o quanto você compreende sobre o objetivo, o método e o produto desta etapa.</p>
+
+      <div id="quiz1">
+        <div class="card">
+          <h3>1. Qual é o objetivo da Etapa 3?</h3>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1a')"><span class="quiz-letter">A</span><span class="quiz-text">Identificar as Grandes Ideias do 2º semestre.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1a')"><span class="quiz-letter">B</span><span class="quiz-text">Analisar quais Aprendizagens Essenciais anteriores representam pré-requisitos indispensáveis para o 2º semestre, cruzando-as com descritores do Mapa SARESP para estabelecer prioridades de retomada.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1a')"><span class="quiz-letter">C</span><span class="quiz-text">Elaborar planos de recuperação individualizados para cada estudante.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1a')"><span class="quiz-letter">D</span><span class="quiz-text">Avaliar o desempenho dos estudantes no 2º semestre.</span></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>2. Quantas Aprendizagens Essenciais devem ser eleitas como prioridades de retomada?</h3>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1b')"><span class="quiz-letter">A</span><span class="quiz-text">Uma.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1b')"><span class="quiz-letter">B</span><span class="quiz-text">No máximo duas.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1b')"><span class="quiz-letter">C</span><span class="quiz-text">Três.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1b')"><span class="quiz-letter">D</span><span class="quiz-text">Todas as AEs do 1º semestre.</span></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>3. Para o 6º ano, qual AE do 1º semestre é identificada como pré-requisito para a AE11 (operações com decimais)?</h3>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1c')"><span class="quiz-letter">A</span><span class="quiz-text">AE3 — Resolver problemas com as quatro operações com números naturais.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1c')"><span class="quiz-letter">B</span><span class="quiz-text">AE5 — Resolver problemas envolvendo cálculo da fração de uma quantidade.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1c')"><span class="quiz-letter">C</span><span class="quiz-text">AE7 — Resolver problemas que envolvam adição ou subtração de números racionais na representação fracionária.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1c')"><span class="quiz-letter">D</span><span class="quiz-text">AE4 — Resolver problemas envolvendo múltiplos e divisores.</span></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>4. Para o 1ª série EM, qual AE é pré-requisito para a AE5 (funções de 2º grau)?</h3>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1d')"><span class="quiz-letter">A</span><span class="quiz-text">AE1 — Operações com números reais.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1d')"><span class="quiz-letter">B</span><span class="quiz-text">AE2 — Teorema de Pitágoras.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1d')"><span class="quiz-letter">C</span><span class="quiz-text">AE3 — Reconhecer funções como relações de dependência.</span></div>
+          <div class="quiz-option" onclick="selectQuiz(this,'q1d')"><span class="quiz-letter">D</span><span class="quiz-text">AE4 — Funções polinomiais de 1º grau.</span></div>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback1"></div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="goTo(0)">← Voltar</button>
+        <button class="btn btn-primary" onclick="checkQuiz1()">Verificar</button>
+        <button class="btn btn-primary" id="next1" onclick="goTo(2)" style="display:none">Próximo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 2: ARRASTE E SOLTE -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" data-title="Arraste e Solte">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:28%"></div></div>
+      <span class="progress-text">2 / 7</span>
+    </div>
+    <div class="stagger">
+      <p class="section-label">Atividade 2 — Arraste e solte</p>
+      <h1 class="section-title">Pré-requisitos × Aprendizagens do 2º Semestre</h1>
+      <p class="section-subtitle">Arraste cada AE pré-requisito (1º semestre) para a AE correspondente do 2º semestre que ela desbloqueia.</p>
+
+      <div class="drag-zone" id="dragSource2">
+        <div class="drag-item" draggable="true" data-value="ae11" id="d2-1">AE7 — Adição/subtração de racionais na forma fracionária</div>
+        <div class="drag-item" draggable="true" data-value="ae12" id="d2-2">AE5 — Fração de uma quantidade (resultado natural)</div>
+        <div class="drag-item" draggable="true" data-value="ae5em" id="d2-3">AE4 (EM) — Funções polinomiais de 1º grau</div>
+        <div class="drag-item" draggable="true" data-value="ae4em" id="d2-4">AE1 (EM) — Operações com números reais (potenciação e radicação)</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+        <div class="drop-target" id="drop-ae11" data-accepts="ae11">
+          <div class="target-label" style="color:#0a2f6c">📘 AE11 (6º ano)</div>
+          <div class="target-desc">Operações com números racionais na representação decimal</div>
+          <div class="dropped-items"></div>
+        </div>
+        <div class="drop-target" id="drop-ae12" data-accepts="ae12">
+          <div class="target-label" style="color:#d32f2f">📕 AE12 (6º ano)</div>
+          <div class="target-desc">Porcentagem com base na proporcionalidade</div>
+          <div class="dropped-items"></div>
+        </div>
+        <div class="drop-target" id="drop-ae4em" data-accepts="ae4em">
+          <div class="target-label" style="color:#6b21a8">📓 AE4 (EM — 1ª série)</div>
+          <div class="target-desc">Funções polinomiais de 1º grau</div>
+          <div class="dropped-items"></div>
+        </div>
+        <div class="drop-target" id="drop-ae5em" data-accepts="ae5em">
+          <div class="target-label" style="color:#b8860b">📗 AE5 (EM — 1ª série)</div>
+          <div class="target-desc">Funções polinomiais de 2º grau</div>
+          <div class="dropped-items"></div>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback2"></div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="goTo(1)">← Voltar</button>
+        <button class="btn btn-primary" onclick="checkDrag2()">Verificar</button>
+        <button class="btn btn-primary" id="next2" onclick="goTo(3)" style="display:none">Próximo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 3: LISTA SUSPENSA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" data-title="Lista Suspensa">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:42%"></div></div>
+      <span class="progress-text">3 / 7</span>
+    </div>
+    <div class="stagger">
+      <p class="section-label">Atividade 3 — Lista suspensa</p>
+      <h1 class="section-title">Completando as Informações</h1>
+      <p class="section-subtitle">Selecione a resposta correta para cada questão sobre as Prioridades de Retomada.</p>
+
+      <div class="card">
+        <div class="dropdown-row">
+          <span class="q-num">1</span>
+          <span class="q-label">A AE7 (6º ano) está relacionada à Grande Ideia de:</span>
+          <select id="q3a" onchange="checkSelect(this)">
+            <option value="">— Selecione —</option>
+            <option value="a">Porcentagem</option>
+            <option value="b">Figuras geométricas espaciais</option>
+            <option value="c">Operações com números decimais</option>
+            <option value="d">Nenhuma das anteriores — é um pré-requisito para AE11</option>
+          </select>
+        </div>
+
+        <div class="dropdown-row">
+          <span class="q-num">2</span>
+          <span class="q-label">O descritor SARESP prioritário da AE7 para retomada é:</span>
+          <select id="q3b" onchange="checkSelect(this)">
+            <option value="">— Selecione —</option>
+            <option value="a">Comparar números racionais na reta numérica</option>
+            <option value="b">Resolver problemas que envolvam adição ou subtração com números racionais positivos na representação fracionária</option>
+            <option value="c">Reconhecer representações de números racionais</option>
+          </select>
+        </div>
+
+        <div class="dropdown-row">
+          <span class="q-num">3</span>
+          <span class="q-label">A AE5 (6º ano), pré-requisito para AE12, envolve o cálculo da fração de uma quantidade cujo resultado é:</span>
+          <select id="q3c" onchange="checkSelect(this)">
+            <option value="">— Selecione —</option>
+            <option value="a">Um número decimal</option>
+            <option value="b">Um número racional qualquer</option>
+            <option value="c">Um número natural</option>
+          </select>
+        </div>
+
+        <div class="dropdown-row">
+          <span class="q-num">4</span>
+          <span class="q-label">No Ensino Médio (1ª série), a AE4 é pré-requisito para qual AE do 2º semestre?</span>
+          <select id="q3d" onchange="checkSelect(this)">
+            <option value="">— Selecione —</option>
+            <option value="a">AE6 — Otimização com funções quadráticas</option>
+            <option value="b">AE3 — Funções como relações de dependência</option>
+            <option value="c">AE5 — Funções polinomiais de 2º grau</option>
+          </select>
+        </div>
+
+        <div class="dropdown-row">
+          <span class="q-num">5</span>
+          <span class="q-label">No Ensino Médio, qual referência é utilizada no lugar do Mapa SARESP para o exercício da Etapa 3?</span>
+          <select id="q3e" onchange="checkSelect(this)">
+            <option value="">— Selecione —</option>
+            <option value="a">Mapa SARESP do Ensino Médio</option>
+            <option value="b">BNCC — Base Nacional Comum Curricular</option>
+            <option value="c">Matriz da Prova Paulista</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback3"></div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="goTo(2)">← Voltar</button>
+        <button class="btn btn-primary" onclick="checkQuiz3()">Verificar</button>
+        <button class="btn btn-primary" id="next3" onclick="goTo(4)" style="display:none">Próximo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 4: VERDADEIRO OU FALSO -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" data-title="V ou F">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:57%"></div></div>
+      <span class="progress-text">4 / 7</span>
+    </div>
+    <div class="stagger">
+      <p class="section-label">Atividade 4 — Verdadeiro ou falso</p>
+      <h1 class="section-title">Afirmações sobre a Etapa 3</h1>
+      <p class="section-subtitle">Analise cada afirmação e clique em <strong>Verdadeiro</strong> ou <strong>Falso</strong>.</p>
+
+      <div id="tfContainer">
+        <div class="card">
+          <div class="tf-statement"><strong>1.</strong> A Etapa 3 consiste em analisar quais Aprendizagens Essenciais do 1º semestre representam pré-requisitos indispensáveis para o 2º semestre.</div>
+          <div class="tf-row">
+            <div class="tf-option" onclick="selectTF(this,'tf1','v')"><span class="tf-icon">V</span><span class="tf-text">Verdadeiro</span></div>
+            <div class="tf-option" onclick="selectTF(this,'tf1','v')"><span class="tf-icon">F</span><span class="tf-text">Falso</span></div>
+          </div>
+          <div class="tf-feedback" id="tf1-fb" style="display:none;font-size:12px;margin-top:8px;padding:10px;border-radius:10px"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="tf-statement"><strong>2.</strong> A AE11 (operações com decimais) tem como pré-requisito a AE5 (fração de uma quantidade).</div>
+          <div class="tf-row">
+            <div class="tf-option" onclick="selectTF(this,'tf2','f')"><span class="tf-icon">V</span><span class="tf-text">Verdadeiro</span></div>
+            <div class="tf-option" onclick="selectTF(this,'tf2','f')"><span class="tf-icon">F</span><span class="tf-text">Falso</span></div>
+          </div>
+          <div class="tf-feedback" id="tf2-fb" style="display:none;font-size:12px;margin-top:8px;padding:10px;border-radius:10px"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="tf-statement"><strong>3.</strong> Para o Ensino Médio (1ª série), a AE4 (funções de 1º grau) é pré-requisito para a AE5 (funções de 2º grau).</div>
+          <div class="tf-row">
+            <div class="tf-option" onclick="selectTF(this,'tf3','v')"><span class="tf-icon">V</span><span class="tf-text">Verdadeiro</span></div>
+            <div class="tf-option" onclick="selectTF(this,'tf3','v')"><span class="tf-icon">F</span><span class="tf-text">Falso</span></div>
+          </div>
+          <div class="tf-feedback" id="tf3-fb" style="display:none;font-size:12px;margin-top:8px;padding:10px;border-radius:10px"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="tf-statement"><strong>4.</strong> A AE12 (porcentagem) tem como pré-requisito a AE7 (adição/subtração de frações).</div>
+          <div class="tf-row">
+            <div class="tf-option" onclick="selectTF(this,'tf4','f')"><span class="tf-icon">V</span><span class="tf-text">Verdadeiro</span></div>
+            <div class="tf-option" onclick="selectTF(this,'tf4','f')"><span class="tf-icon">F</span><span class="tf-text">Falso</span></div>
+          </div>
+          <div class="tf-feedback" id="tf4-fb" style="display:none;font-size:12px;margin-top:8px;padding:10px;border-radius:10px"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="tf-statement"><strong>5.</strong> No Ensino Médio, o exercício da Etapa 3 utiliza a Matriz da Prova Paulista como referência, em vez do Mapa SARESP.</div>
+          <div class="tf-row">
+            <div class="tf-option" onclick="selectTF(this,'tf5','v')"><span class="tf-icon">V</span><span class="tf-text">Verdadeiro</span></div>
+            <div class="tf-option" onclick="selectTF(this,'tf5','v')"><span class="tf-icon">F</span><span class="tf-text">Falso</span></div>
+          </div>
+          <div class="tf-feedback" id="tf5-fb" style="display:none;font-size:12px;margin-top:8px;padding:10px;border-radius:10px"></div>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback4"></div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="goTo(3)">← Voltar</button>
+        <button class="btn btn-primary" onclick="checkTF()">Verificar</button>
+        <button class="btn btn-primary" id="next4" onclick="goTo(5)" style="display:none">Próximo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 5: RELACIONAR COLUNAS -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" data-title="Relacionar">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:71%"></div></div>
+      <span class="progress-text">5 / 7</span>
+    </div>
+    <div class="stagger">
+      <p class="section-label">Atividade 5 — Relacionar colunas</p>
+      <h1 class="section-title">Descritores SARESP — Mapa de Retomada</h1>
+      <p class="section-subtitle">Clique em um item à esquerda e depois no correspondente à direita para formar pares. Relacione cada descritor SARESP à sua AE de origem correta.</p>
+
+      <div class="card">
+        <div class="match-wrapper">
+          <div class="match-col">
+            <div class="match-col-header">Descritor SARESP (6º ano)</div>
+            <div class="match-item" data-match="p1" onclick="selectMatchItem(this,'left')">Resolver problemas que envolvam adição ou subtração com números racionais positivos na representação fracionária</div>
+            <div class="match-item" data-match="p2" onclick="selectMatchItem(this,'left')">Resolver problemas simples que envolvam o cálculo da fração de uma quantidade, cujo resultado seja um número natural</div>
+            <div class="match-item" data-match="p3" onclick="selectMatchItem(this,'left')">Comparar números racionais, com ou sem apoio da reta numérica</div>
+            <div class="match-item" data-match="p4" onclick="selectMatchItem(this,'left')">Resolver problemas que envolvam porcentagens para cálculo de acréscimos ou decréscimos simples</div>
+            <div class="match-item" data-match="p5" onclick="selectMatchItem(this,'left')">Reconhecer diferentes representações dos números racionais positivos (formas fracionária, decimal, porcentagem e pictórica)</div>
+          </div>
+          <div class="match-divider">
+            <span>⇄</span><span>⇄</span><span>⇄</span><span>⇄</span><span>⇄</span>
+          </div>
+          <div class="match-col">
+            <div class="match-col-header">AE — Relação</div>
+            <div class="match-item" data-match="p2" onclick="selectMatchItem(this,'right')">AE5 (6º ano) — Pré-requisito de AE12</div>
+            <div class="match-item" data-match="p5" onclick="selectMatchItem(this,'right')">AE11 (6º ano) — Descritor fundamental do 2º semestre</div>
+            <div class="match-item" data-match="p1" onclick="selectMatchItem(this,'right')">AE7 (6º ano) — Pré-requisito de AE11</div>
+            <div class="match-item" data-match="p4" onclick="selectMatchItem(this,'right')">AE12 (6º ano) — Descritor fundamental do 2º semestre</div>
+            <div class="match-item" data-match="p3" onclick="selectMatchItem(this,'right')">AE6 (6º ano) — Descritor do 2º semestre</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback5"></div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="goTo(4)">← Voltar</button>
+        <button class="btn btn-primary" onclick="checkMatch()">Verificar</button>
+        <button class="btn btn-primary" id="next5" onclick="goTo(6)" style="display:none">Próximo →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 6: BINGO -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" data-title="Bingo">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:85%"></div></div>
+      <span class="progress-text">6 / 7</span>
+    </div>
+    <div class="stagger">
+      <p class="section-label">Atividade 6 — Bingo da Etapa 3</p>
+      <h1 class="section-title">Marque o que você já sabia!</h1>
+      <p class="section-subtitle">Clique nas células que representam algo que você <strong>já sabia</strong> sobre a Etapa 3. Discuta com o grupo o que era novidade!</p>
+
+      <div class="card">
+        <div class="bingo-grid" id="bingoGrid">
+          <div class="bingo-cell" onclick="toggleBingo(this)">AE7 é pré-requisito para AE11 (6º ano)</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">AE5 é pré-requisito para AE12 (6º ano)</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">No máximo DUAS prioridades de retomada</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">AE11: Operações com decimais (3º bim)</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">AE12: Porcentagem sem regra de três</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">AE1 (EM) é pré-requisito para AE4 (EM)</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">AE4 (EM) é pré-requisito para AE5 (EM)</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">Matriz da Prova Paulista (referência EM)</div>
+          <div class="bingo-cell" onclick="toggleBingo(this)">Descritores do Mapa SARESP cruzados</div>
+        </div>
+
+        <div class="feedback info show" style="margin-top:16px">
+          <strong>Dica:</strong> Quanto mais você marcar, melhor! Mas o mais importante é discutir com o grupo o que era novidade para você.
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="goTo(5)">← Voltar</button>
+        <button class="btn btn-primary" onclick="goTo(7)">Ver resultado →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SECTION 7: RESULTADO E GABARITO -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section" data-title="Resultado">
+    <div class="section-progress">
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:100%"></div></div>
+      <span class="progress-text">7 / 7</span>
+    </div>
+    <div class="stagger">
+      <p class="section-label">Resultado</p>
+      <h1 class="section-title">Parabéns, você completou a Etapa 3!</h1>
+
+      <div class="score-display">
+        <div class="score-number" id="finalScore">—</div>
+        <div class="score-label">Pontuação total</div>
+      </div>
+
+      <div class="card card-accent" style="margin-top:24px">
+        <h2>Resumo — Prioridades de Retomada</h2>
+        <p style="font-size:13px;line-height:2">
+          <strong>📘 6º ano (SARESP):</strong><br>
+          · AE11 (2º semestre) ← <strong>AE7</strong> (pré-requisito): Resolver problemas que envolvam adição ou subtração de números racionais positivos na representação fracionária. Descritor SARESP: Resolver problemas que envolvam adição ou subtração com números racionais positivos na representação fracionária.<br>
+          · AE12 (2º semestre) ← <strong>AE5</strong> (pré-requisito): Resolver problemas envolvendo cálculo da fração de uma quantidade, cujo resultado é um número natural. Descritor SARESP: Resolver problemas simples que envolvam o cálculo da fração de uma quantidade, cujo resultado seja um número natural.<br><br>
+          <strong>📗 1ª série EM (Prova Paulista):</strong><br>
+          · AE4 (2º semestre) ← <strong>AE1</strong> (pré-requisito): Utilizar operações com números reais, incluindo potenciação e radicação. Grupo 3 — Resolver situações-problema envolvendo operações com números reais em contextos de grandezas e medidas.<br>
+          · AE5 (2º semestre) ← <strong>AE4</strong> (pré-requisito): Resolver situações-problema modeladas por funções polinomiais de 1º grau. Grupo 1 — Identificar a representação gráfica de uma função polinomial do 1º grau a partir de sua lei de formação. Grupo 2 — Determinar a solução de equações polinomiais do 1º grau explícitas. Grupo 3 — Resolver situações-problemas representadas por equações polinomiais do 1º grau.
+        </p>
+      </div>
+
+      <!-- GABARITO -->
+      <div class="gabarito-section">
+        <span class="badge verde">Gabarito Completo</span>
+        <h2 style="color:#1a7a4a;margin-bottom:1rem">Respostas de todas as atividades</h2>
+
+        <h3 style="color:#0a2f6c;margin:1rem 0 .5rem">Atividade 1 — Quiz</h3>
+        <div class="gabarito-item"><span class="gabarito-num">1</span><div><span class="gabarito-resp">B — Analisar quais AEs anteriores representam pré-requisitos indispensáveis para o 2º semestre, cruzando-as com descritores do Mapa SARESP.</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">2</span><div><span class="gabarito-resp">B — No máximo duas.</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">3</span><div><span class="gabarito-resp">C — AE7 (adição/subtração de racionais na representação fracionária).</span> A AE7 trava a AE11 porque sem dominar operações com frações, o aluno não consegue avançar para operações com decimais.</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">4</span><div><span class="gabarito-resp">D — AE4 (funções polinomiais de 1º grau).</span> A AE4 é pré-requisito para AE5 porque o domínio de funções de 1º grau é necessário para compreender funções de 2º grau.</div></div>
+
+        <h3 style="color:#0a2f6c;margin:1rem 0 .5rem">Atividade 2 — Arraste e Solte</h3>
+        <div class="gabarito-item"><span class="gabarito-num">📘</span><div><span class="gabarito-resp">AE11 (6º ano):</span> AE7 — Adição/subtração de racionais na forma fracionária</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">📕</span><div><span class="gabarito-resp">AE12 (6º ano):</span> AE5 — Fração de uma quantidade (resultado natural)</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">📓</span><div><span class="gabarito-resp">AE4 (EM):</span> AE1 (EM) — Operações com números reais (potenciação e radicação)</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">📗</span><div><span class="gabarito-resp">AE5 (EM):</span> AE4 (EM) — Funções polinomiais de 1º grau</div></div>
+
+        <h3 style="color:#0a2f6c;margin:1rem 0 .5rem">Atividade 3 — Lista Suspensa</h3>
+        <div class="gabarito-item"><span class="gabarito-num">1</span><div><span class="gabarito-resp">D — Nenhuma das anteriores — é um pré-requisito para AE11.</span> A AE7 é uma AE do 1º semestre que funciona como pré-requisito, não está diretamente ligada a uma Grande Ideia do 2º semestre.</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">2</span><div><span class="gabarito-resp">B — Resolver problemas que envolvam adição ou subtração com números racionais positivos na representação fracionária.</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">3</span><div><span class="gabarito-resp">C — Um número natural.</span> A AE5 envolve fração de uma quantidade com resultado natural.</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">4</span><div><span class="gabarito-resp">C — AE5 (funções polinomiais de 2º grau).</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">5</span><div><span class="gabarito-resp">C — Matriz da Prova Paulista.</span> Para o Ensino Médio, a referência é a Matriz da Prova Paulista.</div></div>
+
+        <h3 style="color:#0a2f6c;margin:1rem 0 .5rem">Atividade 4 — Verdadeiro ou Falso</h3>
+        <div class="gabarito-item"><span class="gabarito-num">1</span><div><span class="gabarito-resp">VERDADEIRO.</span> A Etapa 3 analisa quais AEs do 1º semestre são pré-requisitos para o 2º semestre.</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">2</span><div><span class="gabarito-resp">FALSO.</span> A AE11 tem como pré-requisito a AE7 (operações com frações), não a AE5.</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">3</span><div><span class="gabarito-resp">VERDADEIRO.</span> A AE4 (funções de 1º grau) é pré-requisito para a AE5 (funções de 2º grau).</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">4</span><div><span class="gabarito-resp">FALSO.</span> A AE12 (porcentagem) tem como pré-requisito a AE5 (fração de uma quantidade), não a AE7.</div></div>
+        <div class="gabarito-item"><span class="gabarito-num">5</span><div><span class="gabarito-resp">VERDADEIRO.</span> Para o EM, a referência utilizada é a Matriz da Prova Paulista.</div></div>
+
+        <h3 style="color:#0a2f6c;margin:1rem 0 .5rem">Atividade 5 — Relacionar Colunas</h3>
+        <div class="gabarito-item"><span class="gabarito-num">1</span><div><span class="gabarito-resp">"Adição/subtração com racionais fracionários" → AE7 (6º ano) — Pré-requisito de AE11</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">2</span><div><span class="gabarito-resp">"Fração de quantidade, resultado natural" → AE5 (6º ano) — Pré-requisito de AE12</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">3</span><div><span class="gabarito-resp">"Comparar racionais na reta numérica" → AE6 (6º ano) — Descritor do 2º semestre</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">4</span><div><span class="gabarito-resp">"Porcentagens — acréscimos ou decréscimos" → AE12 (6º ano) — Descritor fundamental do 2º semestre</span></div></div>
+        <div class="gabarito-item"><span class="gabarito-num">5</span><div><span class="gabarito-resp">"Diferentes representações de racionais" → AE11 (6º ano) — Descritor fundamental do 2º semestre</span></div></div>
+
+        <h3 style="color:#0a2f6c;margin:1rem 0 .5rem">Atividade 6 — Bingo (autoavaliação)</h3>
+        <div class="gabarito-item"><span class="gabarito-num">✓</span><div><span class="gabarito-resp">9 conceitos-chave</span> da Etapa 3 para verificar conhecimento prévio.</div></div>
+      </div>
+
+      <div class="card card-success" style="margin-top:16px">
+        <h3>Dica</h3>
+        <p style="font-size:13px;line-height:1.8">
+          Utilize o gabarito como <strong>referência para discussão</strong>, e não como única possibilidade de resposta. Valorize diferentes justificativas quando estiverem conceitualmente consistentes. Retome a problemática inicial evidenciando como o percurso realizado responde à questão: <strong>"Quais Aprendizagens Essenciais anteriores representam pré-requisitos indispensáveis para o 2º semestre?"</strong>
+        </p>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="location.reload()">Reiniciar atividade</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="page-footer">
+    ETAPA 3 · PRIORIDADES DE RETOMADA · URECAIEIRAS · FORMAÇÃO DE MATEMÁTICA 2026
+  </div>
+
+</div>
+
+<script>
+// ═══ TIMER ═══
+var TOTAL_SECONDS = 20 * 60;
+var remaining = TOTAL_SECONDS;
+var timerInterval = null;
+var timerRunning = true;
+
+function updateTimer() {
+  if (remaining <= 0) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerDisplay').textContent = '00:00';
+    document.getElementById('timerDisplay').classList.add('warning');
+    return;
+  }
+  remaining--;
+  var m = Math.floor(remaining / 60);
+  var s = remaining % 60;
+  var display = document.getElementById('timerDisplay');
+  display.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  document.getElementById('timerProgress').style.width = ((remaining / TOTAL_SECONDS) * 100) + '%';
+  if (remaining < 120) display.classList.add('warning');
+  else display.classList.remove('warning');
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    document.getElementById('timerBtn').textContent = 'Retomar';
+    timerRunning = false;
+  } else {
+    timerInterval = setInterval(updateTimer, 1000);
+    document.getElementById('timerBtn').textContent = 'Pausar';
+    timerRunning = true;
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  remaining = TOTAL_SECONDS;
+  timerRunning = true;
+  document.getElementById('timerBtn').textContent = 'Pausar';
+  document.getElementById('timerDisplay').textContent = '20:00';
+  document.getElementById('timerDisplay').classList.remove('warning');
+  document.getElementById('timerProgress').style.width = '100%';
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+timerInterval = setInterval(updateTimer, 1000);
+
+// ═══ NAVIGATION ═══
+var currentSection = 0;
+var sections = document.querySelectorAll('.section');
+
+function goTo(index) {
+  sections[currentSection].classList.remove('active');
+  currentSection = index;
+  sections[currentSection].classList.add('active');
+  sections[currentSection].style.animation = 'none';
+  sections[currentSection].offsetHeight;
+  sections[currentSection].style.animation = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (index === 7) {
+    document.getElementById('finalScore').textContent = totalScore + ' / ' + maxScore;
+    launchConfetti();
+  }
+}
+
+// ═══ SCORE ═══
+var totalScore = 0;
+var maxScore = 0;
+function addScore(points) { totalScore += points; }
+
+// ═══ QUIZ STATE ═══
+var quizState = {};
+var quizAnswers = { q1a: 1, q1b: 1, q1c: 2, q1d: 3 };
+
+function selectQuiz(el, quizId) {
+  if (quizState[quizId + '_locked']) return;
+  var parent = el.closest('.card');
+  parent.querySelectorAll('.quiz-option').forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  if (!quizState[quizId]) quizState[quizId] = {};
+  quizState[quizId].selected = el;
+}
+
+function checkQuiz1() {
+  maxScore += 4;
+  var correct = 0;
+  var cards = document.querySelectorAll('#quiz1 .card');
+  var ids = ['q1a', 'q1b', 'q1c', 'q1d'];
+
+  ids.forEach(function(qid, i) {
+    if (quizState[qid + '_locked']) return;
+    var options = cards[i].querySelectorAll('.quiz-option');
+    var sel = quizState[qid] ? quizState[qid].selected : null;
+    if (sel) {
+      var idx = Array.from(options).indexOf(sel);
+      var correctIdx = quizAnswers[qid];
+      if (idx === correctIdx) { correct++; sel.classList.add('correct'); }
+      else { sel.classList.add('wrong'); options[correctIdx].classList.add('correct'); }
+      quizState[qid + '_locked'] = true;
+    }
+  });
+
+  addScore(correct);
+  var fb = document.getElementById('feedback1');
+  fb.className = 'feedback show ' + (correct === 4 ? 'success' : 'error');
+  fb.innerHTML = correct === 4
+    ? 'Perfeito! Você domina o objetivo da Etapa 3!'
+    : correct + ' de 4. Revise: a Etapa 3 identifica pré-requisitos do 1º semestre para o 2º semestre, elege no máximo DUAS AEs e usa Mapa SARESP (AF) ou Matriz Prova Paulista (EM).';
+  document.getElementById('next1').style.display = 'inline-flex';
+}
+
+// ═══ DRAG & DROP ═══
+var dragSrcEl = null;
+
+function initDragItems(container) {
+  container.querySelectorAll('.drag-item').forEach(function(item) {
+    item.addEventListener('dragstart', function(e) {
+      dragSrcEl = item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', item.dataset.value);
+    });
+    item.addEventListener('dragend', function() {
+      item.classList.remove('dragging');
+      dragSrcEl = null;
+    });
+    item.addEventListener('click', function() {
+      if (item.classList.contains('placed')) return;
+      document.querySelectorAll('.drag-item').forEach(function(i) { i.style.outline = 'none'; });
+      item.style.outline = '2px solid #d32f2f';
+      window._selectedDragItem = item;
+    });
+  });
+}
+
+function setupDropZone(zone) {
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (!dragSrcEl) return;
+    dropItem(zone, dragSrcEl);
+  });
+  zone.addEventListener('click', function(e) {
+    if (!window._selectedDragItem) return;
+    if (e.target.closest('.dropped-item')) return;
+    dropItem(zone, window._selectedDragItem);
+    window._selectedDragItem = null;
+  });
+}
+
+function dropItem(zone, item) {
+  var container = zone.querySelector('.dropped-items');
+  var clone = document.createElement('div');
+  clone.className = 'dropped-item';
+  clone.textContent = item.textContent;
+  clone.dataset.value = item.dataset.value;
+  clone.onclick = function() {
+    this.remove();
+    item.classList.remove('placed');
+    item.style.outline = 'none';
+  };
+  container.appendChild(clone);
+  item.classList.add('placed');
+  item.style.outline = 'none';
+}
+
+document.querySelectorAll('.drag-zone').forEach(initDragItems);
+document.querySelectorAll('.drop-target').forEach(setupDropZone);
+
+function checkDrag2() {
+  maxScore += 4;
+  var correct = 0;
+  var zones = ['drop-ae11', 'drop-ae12', 'drop-ae4em', 'drop-ae5em'];
+
+  zones.forEach(function(zoneId) {
+    var zone = document.getElementById(zoneId);
+    var accepts = zone.dataset.accepts;
+    zone.querySelectorAll('.dropped-item').forEach(function(item) {
+      if (item.dataset.value === accepts) { correct++; item.style.background = '#1a7a4a'; }
+      else { item.style.background = '#d32f2f'; }
+    });
+  });
+
+  addScore(correct);
+  var fb = document.getElementById('feedback2');
+  fb.className = 'feedback show ' + (correct === 4 ? 'success' : 'error');
+  fb.innerHTML = correct === 4
+    ? 'Excelente! Você identificou corretamente todos os pré-requisitos!'
+    : correct + ' de 4. Revise: AE7→AE11, AE5→AE12, AE1(EM)→AE4(EM), AE4(EM)→AE5(EM).';
+  document.getElementById('next2').style.display = 'inline-flex';
+}
+
+// ═══ LISTA SUSPENSA ═══
+var respostas3 = { q3a: 'd', q3b: 'b', q3c: 'c', q3d: 'c', q3e: 'c' };
+
+function checkSelect(sel) {
+  var id = sel.id;
+  var val = sel.value;
+  if (!val) { sel.classList.remove('correct-select', 'incorrect-select'); return; }
+  if (val === respostas3[id]) {
+    sel.classList.remove('incorrect-select');
+    sel.classList.add('correct-select');
+  } else {
+    sel.classList.remove('correct-select');
+    sel.classList.add('incorrect-select');
+  }
+}
+
+function checkQuiz3() {
+  maxScore += 5;
+  var acertos = 0;
+  var todosRespondidos = true;
+
+  for (var id in respostas3) {
+    var sel = document.getElementById(id);
+    if (!sel) continue;
+    var val = sel.value;
+    if (!val) { todosRespondidos = false; sel.style.borderColor = '#ffc107'; continue; }
+    if (val === respostas3[id]) {
+      acertos++;
+      sel.classList.remove('incorrect-select');
+      sel.classList.add('correct-select');
+    } else {
+      sel.classList.remove('correct-select');
+      sel.classList.add('incorrect-select');
+    }
+  }
+
+  addScore(acertos);
+  var fb = document.getElementById('feedback3');
+  fb.className = 'feedback show ' + (acertos === 5 ? 'success' : 'error');
+  fb.innerHTML = acertos === 5
+    ? 'Perfeito! Você domina as informações sobre as Prioridades de Retomada!'
+    : acertos + ' de 5. Revise: AE7 é pré-requisito de AE11, AE5 é pré-requisito de AE12, AE4(EM) pré-requisito de AE5(EM), referência EM = Matriz Prova Paulista.';
+  if (!todosRespondidos) fb.innerHTML += ' (Há questões não respondidas.)';
+  document.getElementById('next3').style.display = 'inline-flex';
+}
+
+// ═══ VERDADEIRO OU FALSO ═══
+var tfState = {};
+var tfAnswers = { tf1: 'v', tf2: 'f', tf3: 'v', tf4: 'f', tf5: 'v' };
+var tfExplanations = {
+  tf1: 'VERDADEIRO — A Etapa 3 analisa quais AEs do 1º semestre são pré-requisitos para o 2º semestre.',
+  tf2: 'FALSO — A AE11 tem como pré-requisito a AE7 (operações com frações), não a AE5.',
+  tf3: 'VERDADEIRO — A AE4 (1º grau) é pré-requisito para a AE5 (2º grau) no Ensino Médio.',
+  tf4: 'FALSO — A AE12 (porcentagem) tem como pré-requisito a AE5 (fração de uma quantidade), não a AE7.',
+  tf5: 'VERDADEIRO — Para o EM, a referência utilizada é a Matriz da Prova Paulista.'
+};
+
+function selectTF(el, tfId, correctAnswer) {
+  if (tfState[tfId + '_locked']) return;
+  var row = el.closest('.tf-row');
+  row.querySelectorAll('.tf-option').forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  if (!tfState[tfId]) tfState[tfId] = {};
+  tfState[tfId].selected = el;
+  tfState[tfId].value = el.querySelector('.tf-icon').textContent.toLowerCase() === 'v' ? 'v' : 'f';
+}
+
+function checkTF() {
+  maxScore += 5;
+  var correct = 0;
+  var ids = ['tf1', 'tf2', 'tf3', 'tf4', 'tf5'];
+
+  ids.forEach(function(tfId) {
+    if (tfState[tfId + '_locked']) return;
+    var state = tfState[tfId];
+    var fbEl = document.getElementById(tfId + '-fb');
+    if (state && state.selected) {
+      var isCorrect = state.value === tfAnswers[tfId];
+      if (isCorrect) {
+        correct++;
+        state.selected.classList.add('correct');
+      } else {
+        state.selected.classList.add('wrong');
+        var row = state.selected.closest('.tf-row');
+        row.querySelectorAll('.tf-option').forEach(function(o) {
+          if ((tfAnswers[tfId] === 'v' && o.querySelector('.tf-icon').textContent === 'V') ||
+              (tfAnswers[tfId] === 'f' && o.querySelector('.tf-icon').textContent === 'F')) {
+            o.classList.add('correct');
+          }
+        });
+      }
+      fbEl.style.display = 'block';
+      fbEl.style.background = isCorrect ? '#d4edda' : '#f8d7da';
+      fbEl.style.color = isCorrect ? '#155724' : '#721c24';
+      fbEl.style.border = '1px solid ' + (isCorrect ? '#c3e6cb' : '#f5c6cb');
+      fbEl.textContent = tfExplanations[tfId];
+      tfState[tfId + '_locked'] = true;
+    }
+  });
+
+  addScore(correct);
+  var fb = document.getElementById('feedback4');
+  fb.className = 'feedback show ' + (correct === 5 ? 'success' : 'error');
+  fb.innerHTML = correct === 5
+    ? 'Perfeito! Você analisou corretamente todas as afirmações!'
+    : correct + ' de 5. Leia as explicações acima para entender cada resposta.';
+  document.getElementById('next4').style.display = 'inline-flex';
+}
+
+// ═══ RELACIONAR COLUNAS ═══
+var matchSelLeft = null;
+var matchSelRight = null;
+var matchDone = {};
+
+function selectMatchItem(el, side) {
+  if (el.classList.contains('matched')) return;
+
+  var col = el.closest('.match-col');
+  col.querySelectorAll('.match-item').forEach(function(it) {
+    if (!it.classList.contains('matched')) it.classList.remove('sel');
+  });
+  el.classList.add('sel');
+
+  if (side === 'left') matchSelLeft = el;
+  else matchSelRight = el;
+
+  if (matchSelLeft && matchSelRight) {
+    var lId = matchSelLeft.dataset.match;
+    var rId = matchSelRight.dataset.match;
+
+    if (lId === rId) {
+      matchSelLeft.classList.remove('sel');
+      matchSelRight.classList.remove('sel');
+      matchSelLeft.classList.add('matched');
+      matchSelRight.classList.add('matched');
+      matchDone[lId] = true;
+    } else {
+      matchSelLeft.classList.add('wrong-flash');
+      matchSelRight.classList.add('wrong-flash');
+      (function(l, r) {
+        setTimeout(function() {
+          l.classList.remove('sel', 'wrong-flash');
+          r.classList.remove('sel', 'wrong-flash');
+        }, 500);
+      })(matchSelLeft, matchSelRight);
+    }
+    matchSelLeft = null;
+    matchSelRight = null;
+  }
+}
+
+function checkMatch() {
+  maxScore += 5;
+  var correct = Object.keys(matchDone).length;
+  addScore(correct);
+  var fb = document.getElementById('feedback5');
+  fb.className = 'feedback show ' + (correct === 5 ? 'success' : 'error');
+  fb.innerHTML = correct === 5
+    ? 'Excelente! Você relacionou corretamente todos os descritores às suas AEs!'
+    : correct + ' de 5. Revise: AE7→AE11, AE5→AE12, AE6→comparar racionais, AE11→reconhecer representações, AE12→porcentagem.';
+  document.getElementById('next5').style.display = 'inline-flex';
+}
+
+// ═══ BINGO ═══
+function toggleBingo(el) { el.classList.toggle('marked'); }
+
+// ═══ CONFETTI ═══
+function launchConfetti() {
+  var container = document.createElement('div');
+  container.className = 'confetti-container';
+  document.body.appendChild(container);
+  var colors = ['#d32f2f', '#0a2f6c', '#ffec9e', '#1a7a4a', '#ffc107', '#fff'];
+  for (var i = 0; i < 80; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 2 + 's';
+    piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+    piece.style.width = (4 + Math.random() * 8) + 'px';
+    piece.style.height = (4 + Math.random() * 8) + 'px';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    container.appendChild(piece);
+  }
+  setTimeout(function() { container.remove(); }, 5000);
+}
+</script>
+
+</body>
+</html>
